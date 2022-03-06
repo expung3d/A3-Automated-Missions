@@ -1,0 +1,393 @@
+MAZ_fnc_newConvoyMission = {
+	MAZ_fnc_getConvoyInfo = {
+		params ["_convoyType"];
+		private _returnInfo = [];
+		switch (_convoyType) do {
+			case 0: {
+				comment "Vehicle Types";
+				_returnInfo pushBack [
+					"O_APC_Wheeled_02_rcws_v2_F",
+					"O_Truck_03_ammo_F",
+					"O_LSV_02_armed_F"
+				];
+
+				comment "Starting location";
+				_returnInfo pushBack [10801.153,10591.354];
+
+				comment "Starting locations";
+				_returnInfo pushBack [
+					[10800.998,10625.687],
+					[10801.449,10578.907],
+					[10799.197,10537.174]
+				];
+				
+				comment "Starting direction";
+				_returnInfo pushBack [0,0,0];
+
+				comment "Waypoints";
+				_returnInfo pushBack [
+					[11003.723,15674.568],
+					[15139.83,17539.145],
+					[15797.84,16290.967],
+					[15374.077,16232.825],
+					[15477.943,15886.842]
+				];
+
+				comment "Ending location";
+				_returnInfo pushBack [15483.02,15867.24];
+
+				comment "Marker Locations";
+				_returnInfo pushBack [
+					[11256.663,13165.631],
+					[11330.834,14107.15],
+					[11334.651,15318.223],
+					[12872.64,15937.588],
+					[14940.22,17353.176],
+					[15929.533,16978.57]
+				];
+
+				comment "Convoy Side";
+				_returnInfo pushBack east;
+
+				comment "Unit Type";
+				_returnInfo pushBack "CSAT";
+			};
+			case 1: {
+				comment "Vehicle Types";
+				_returnInfo pushBack [
+					"I_APC_Wheeled_03_cannon_F",
+					"I_Truck_02_ammo_F",
+					selectRandom ["I_MRAP_03_hmg_F","I_MRAP_03_gmg_F"]
+				];
+
+				comment "Starting location";
+				_returnInfo pushBack [21580.479,7823.819];
+
+				comment "Starting locations";
+				_returnInfo pushBack [
+					[21572.172,7857.319],
+					[21584.908,7820.114],
+					[21598.602,7780.707]
+				];
+				
+				comment "Starting direction";
+				_returnInfo pushBack [344.183,341.303,339.796];
+
+				comment "Waypoints";
+				_returnInfo pushBack [
+					[19363.201,13328.431],
+					[19378.586,15294.969],
+					[25343.486,21053.148],
+					[24317.18,21512.117],
+					[22506.36,20784.482],
+					[22019.516,21063.064]
+				];
+
+				comment "Ending location";
+				_returnInfo pushBack [22024.95,21072.063];
+
+				comment "Marker Locations";
+				_returnInfo pushBack [
+					[19912.098,11622.105],
+					[19340.213,14848.896],
+					[20502.85,16353.783],
+					[22899.82,19291.697],
+					[25281.32,21018.078],
+					[24252.854,21534.236],
+					[22653.04,20858.324]
+				];
+
+				comment "Convoy Side";
+				_returnInfo pushBack independent;
+
+				comment "Unit Type";
+				_returnInfo pushBack "AAF";
+			};
+			case 2: {
+				comment "Vehicle Types";
+				_returnInfo pushBack [
+					"O_APC_Tracked_02_cannon_F",
+					"O_Truck_03_device_F",
+					"O_APC_Wheeled_02_rcws_v2_F"
+				];
+
+				comment "Starting location";
+				_returnInfo pushBack [17506.146,13205.87];
+
+				comment "Starting locations";
+				_returnInfo pushBack [
+					[17488.219,13224.532],
+					[17519.352,13192.043],
+					[17548.129,13161.36]
+				];
+				
+				comment "Starting direction";
+				_returnInfo pushBack [316.789,316.911,313.466];
+
+				comment "Waypoints";
+				_returnInfo pushBack [
+					[17284.742,13438.548],
+					[15813.545,17391.84],
+					[10317.244,19004.494],
+					[7437.338,17151.658],
+					[6188.207,16181.874],
+					[6171.746,16300.393]
+				];
+
+				comment "Ending location";
+				_returnInfo pushBack [6175.534,16252.588];
+
+				comment "Marker Locations";
+				_returnInfo pushBack [
+					[16886.854,15487.035],
+					[15497.099,17511.123],
+					[12414.757,18786.67],
+					[8403.481,18231.346]
+				];
+
+				comment "Convoy Side";
+				_returnInfo pushBack east;
+
+				comment "Unit Type";
+				_returnInfo pushBack "CSAT";
+			};
+		};
+		_returnInfo;
+	};
+
+	MAZ_fnc_createVehicleUnitConvoy = {
+		params ["_group","_unitType"];
+		private _unitLoadouts = [];
+		switch (_unitType) do {
+			case "CSAT": {
+				_unitLoadouts = [
+					[["arifle_Katiba_F","","acc_pointer_IR","optic_ACO_grn",["30Rnd_65x39_caseless_green",30],[],""],[],[],["U_O_CombatUniform_ocamo",[["FirstAidKit",5]]],["V_HarnessO_brn",[["HandGrenade",2,1],["SmokeShell",2,1],["SmokeShellGreen",1,1],["30Rnd_65x39_caseless_green",11,30]]],[],"H_HelmetLeaderO_ocamo","",[],["ItemMap","ItemGPS","ItemRadio","ItemCompass","ItemWatch","O_NVGoggles_hex_F"]],
+					[["arifle_AK12U_F","","acc_pointer_IR","optic_ACO_grn",["30Rnd_762x39_AK12_Mag_F",30],[],""],[],[],["U_O_CombatUniform_ocamo",[["FirstAidKit",5]]],["V_HarnessO_brn",[["HandGrenade",2,1],["SmokeShell",2,1],["SmokeShellGreen",1,1],["30Rnd_762x39_AK12_Mag_F",5,30]]],[],"H_HelmetLeaderO_ocamo","",[],["ItemMap","ItemGPS","ItemRadio","ItemCompass","ItemWatch","O_NVGoggles_hex_F"]],
+					[["arifle_CTAR_hex_F","","acc_pointer_IR","optic_Arco",["30Rnd_580x42_Mag_F",30],[],""],[],[],["U_O_CombatUniform_ocamo",[["FirstAidKit",5]]],["V_HarnessO_brn",[["HandGrenade",2,1],["SmokeShell",2,1],["SmokeShellGreen",1,1],["30Rnd_580x42_Mag_F",5,30]]],[],"H_HelmetLeaderO_ocamo","",[],["ItemMap","ItemGPS","ItemRadio","ItemCompass","ItemWatch","O_NVGoggles_hex_F"]],
+					[["srifle_DMR_01_F","","","optic_DMS",["10Rnd_762x54_Mag",10],[],""],[],[],["U_O_CombatUniform_ocamo",[["FirstAidKit",5]]],["V_HarnessO_brn",[["HandGrenade",2,1],["SmokeShell",2,1],["SmokeShellGreen",1,1],["10Rnd_762x54_Mag",5,10]]],[],"H_HelmetLeaderO_ocamo","",[],["ItemMap","ItemGPS","ItemRadio","ItemCompass","ItemWatch","O_NVGoggles_hex_F"]],
+					[["LMG_Zafir_F","","","optic_Holosight",["150Rnd_762x54_Box",150],[],""],[],[],["U_O_CombatUniform_ocamo",[["FirstAidKit",5]]],["V_HarnessO_brn",[["HandGrenade",2,1],["SmokeShell",2,1],["SmokeShellGreen",1,1],["150Rnd_762x54_Box",1,150]]],[],"H_HelmetLeaderO_ocamo","",[],["ItemMap","ItemGPS","ItemRadio","ItemCompass","ItemWatch","O_NVGoggles_hex_F"]],
+					[["arifle_Katiba_GL_F","","acc_pointer_IR","optic_ACO_grn",["30Rnd_65x39_caseless_green",30],["1Rnd_HE_Grenade_shell",1],""],[],[],["U_O_CombatUniform_ocamo",[["FirstAidKit",5]]],["V_HarnessO_brn",[["HandGrenade",2,1],["SmokeShell",2,1],["SmokeShellGreen",1,1],["30Rnd_65x39_caseless_green",6,30],["1Rnd_HE_Grenade_shell",5,1]]],[],"H_HelmetLeaderO_ocamo","",[],["ItemMap","ItemGPS","ItemRadio","ItemCompass","ItemWatch","O_NVGoggles_hex_F"]]
+				];
+			};
+			case "AAF": {
+				_unitLoadouts = [
+					[["arifle_Mk20_F","","acc_pointer_IR","optic_MRCO",["30Rnd_556x45_Stanag",30],[],""],[],["hgun_ACPC2_F","","","",["9Rnd_45ACP_Mag",9],[],""],["U_I_CombatUniform_shortsleeve",[["FirstAidKit",4],["SmokeShell",2,1]]],["V_PlateCarrierIA2_dgtl",[["NVGoggles_INDEP",1],["HandGrenade",2,1],["30Rnd_556x45_Stanag",9,30],["9Rnd_45ACP_Mag",1,9]]],[],"H_HelmetIA","G_Combat_Goggles_tna_F",["","","","",[],[],""],["ItemMap","ItemGPS","ItemRadio","ItemCompass","ItemWatch",""]],
+					[["srifle_EBR_F","","acc_pointer_IR","optic_MRCO",["20Rnd_762x51_Mag",20],[],""],[],["hgun_ACPC2_F","","","",["9Rnd_45ACP_Mag",9],[],""],["U_I_CombatUniform_shortsleeve",[["FirstAidKit",4],["SmokeShell",2,1]]],["V_PlateCarrierIA2_dgtl",[["NVGoggles_INDEP",1],["HandGrenade",2,1],["9Rnd_45ACP_Mag",1,9],["20Rnd_762x51_Mag",4,20]]],[],"H_HelmetIA","G_Combat_Goggles_tna_F",[],["ItemMap","ItemGPS","ItemRadio","ItemCompass","ItemWatch",""]],
+					[["arifle_Mk20_F","","acc_pointer_IR","optic_MRCO",["30Rnd_556x45_Stanag",30],[],""],[],["hgun_ACPC2_F","","","",["9Rnd_45ACP_Mag",9],[],""],["U_I_CombatUniform_shortsleeve",[["FirstAidKit",4],["SmokeShell",2,1]]],["V_PlateCarrierIA2_dgtl",[["NVGoggles_INDEP",1],["HandGrenade",2,1],["9Rnd_45ACP_Mag",1,9],["30Rnd_556x45_Stanag",5,30]]],["B_AssaultPack_dgtl",[["Medikit",1],["FirstAidKit",5]]],"H_HelmetIA","G_Combat_Goggles_tna_F",[],["ItemMap","ItemGPS","ItemRadio","ItemCompass","ItemWatch",""]],
+					[["LMG_Mk200_F","","acc_pointer_IR","optic_MRCO",["200Rnd_65x39_cased_Box",200],[],""],[],["hgun_ACPC2_F","","","",["9Rnd_45ACP_Mag",9],[],""],["U_I_CombatUniform_shortsleeve",[["FirstAidKit",4],["SmokeShell",2,1]]],["V_PlateCarrierIA2_dgtl",[["NVGoggles_INDEP",1],["HandGrenade",2,1],["9Rnd_45ACP_Mag",1,9],["200Rnd_65x39_cased_Box",1,200]]],["B_AssaultPack_dgtl",[["200Rnd_65x39_cased_Box",1,200]]],"H_HelmetIA","G_Combat_Goggles_tna_F",[],["ItemMap","ItemGPS","ItemRadio","ItemCompass","ItemWatch",""]],
+					[["arifle_TRG21_F","","acc_pointer_IR","optic_MRCO",["30Rnd_556x45_Stanag",30],[],""],[],["hgun_ACPC2_F","","","",["9Rnd_45ACP_Mag",9],[],""],["U_I_CombatUniform_shortsleeve",[["FirstAidKit",4],["SmokeShell",2,1]]],["V_PlateCarrierIA2_dgtl",[["NVGoggles_INDEP",1],["HandGrenade",2,1],["9Rnd_45ACP_Mag",1,9],["30Rnd_556x45_Stanag",5,30]]],[],"H_HelmetIA","G_Combat_Goggles_tna_F",[],["ItemMap","ItemGPS","ItemRadio","ItemCompass","ItemWatch",""]],
+					[["arifle_Mk20_GL_F","","acc_pointer_IR","optic_MRCO",["30Rnd_556x45_Stanag",30],["1Rnd_HE_Grenade_shell",1],""],[],["hgun_ACPC2_F","","","",["9Rnd_45ACP_Mag",9],[],""],["U_I_CombatUniform_shortsleeve",[["FirstAidKit",4],["SmokeShell",2,1]]],["V_PlateCarrierIA2_dgtl",[["NVGoggles_INDEP",1],["HandGrenade",2,1],["30Rnd_556x45_Stanag",5,30],["1Rnd_HE_Grenade_shell",5,1]]],[],"H_HelmetIA","G_Combat_Goggles_tna_F",[],["ItemMap","ItemGPS","ItemRadio","ItemCompass","ItemWatch",""]]
+				];
+			};
+			case "LDF": {
+				_unitLoadouts = [
+					[["arifle_MSBS65_F","muzzle_snds_H","acc_pointer_IR","optic_ico_01_f",["30Rnd_65x39_caseless_msbs_mag",30],[],""],[],[],["U_I_E_Uniform_01_sweater_F",[["FirstAidKit",3]]],["V_CarrierRigKBT_01_light_Olive_F",[["30Rnd_65x39_caseless_msbs_mag",6,30],["HandGrenade",2,1],["SmokeShell",2,1]]],[],"H_HelmetHBK_F","G_Tactical_Clear",[],["ItemMap","ItemGPS","ItemRadio","ItemCompass","ItemWatch","O_NVGoggles_grn_F"]],
+					[["arifle_MSBS65_Mark_F","","acc_pointer_IR","optic_Hamr_khk_F",["30Rnd_65x39_caseless_msbs_mag",30],[],""],[],[],["U_I_E_Uniform_01_sweater_F",[["FirstAidKit",3],["30Rnd_65x39_caseless_msbs_mag",1,30]]],["V_CarrierRigKBT_01_light_Olive_F",[["HandGrenade",2,1],["SmokeShell",2,1],["30Rnd_65x39_caseless_msbs_mag",5,30]]],[],"H_HelmetHBK_ear_F","G_Tactical_Clear",[],["ItemMap","ItemGPS","ItemRadio","ItemCompass","ItemWatch","O_NVGoggles_grn_F"]],
+					[["LMG_Mk200_black_F","","acc_pointer_IR","optic_Hamr",["200Rnd_65x39_cased_Box",200],[],""],[],[],["U_I_E_Uniform_01_sweater_F",[["FirstAidKit",3]]],["V_CarrierRigKBT_01_light_Olive_F",[["HandGrenade",2,1],["SmokeShell",2,1],["200Rnd_65x39_cased_Box",2,200]]],["B_AssaultPack_eaf_F",[]],"H_HelmetHBK_headset_F","G_Tactical_Clear",[],["ItemMap","ItemGPS","ItemRadio","ItemCompass","ItemWatch","O_NVGoggles_grn_F"]],
+					[["arifle_MSBS65_GL_F","","acc_pointer_IR","optic_Hamr_khk_F",["30Rnd_65x39_caseless_msbs_mag",30],["1Rnd_HE_Grenade_shell",1],""],[],[],["U_I_E_Uniform_01_sweater_F",[["FirstAidKit",3],["30Rnd_65x39_caseless_msbs_mag",1,30],["1Rnd_HE_Grenade_shell",1,1]]],["V_CarrierRigKBT_01_heavy_EAF_F",[["HandGrenade",2,1],["SmokeShell",2,1],["30Rnd_65x39_caseless_msbs_mag",5,30],["1Rnd_HE_Grenade_shell",4,1]]],[],"H_HelmetHBK_headset_F","G_Tactical_Clear",[],["ItemMap","ItemGPS","ItemRadio","ItemCompass","ItemWatch","O_NVGoggles_grn_F"]],
+					[["arifle_MSBS65_F","muzzle_snds_H","acc_pointer_IR","optic_ico_01_f",["30Rnd_65x39_caseless_msbs_mag",30],[],""],[],[],["U_I_E_Uniform_01_sweater_F",[["FirstAidKit",3]]],["V_CarrierRigKBT_01_light_Olive_F",[["30Rnd_65x39_caseless_msbs_mag",6,30],["HandGrenade",2,1],["SmokeShell",2,1]]],["B_AssaultPack_eaf_F",[["Medikit",1],["FirstAidKit",5]]],"H_HelmetHBK_F","G_Tactical_Clear",[],["ItemMap","ItemGPS","ItemRadio","ItemCompass","ItemWatch","O_NVGoggles_grn_F"]]
+				];
+			};
+		};
+		private _sidePrefix = "";
+		switch (side _group) do {
+			case east: {_sidePrefix = "O_";};
+			case independent: {_sidePrefix = "I_";};
+			default { };
+		};
+		private _soldier = _group createUnit [format ["%1Soldier_F",_sidePrefix],[23405.7,17895.8,0],[],0,"CAN_COLLIDE"];
+		_soldier setVectorDirAndUp [[0,1,0],[0,0,1]];
+		_soldier setUnitLoadout (selectRandom _unitLoadouts);
+		_soldier setUnitPos "UP";
+		_soldier;
+	};
+
+	MAZ_fnc_createConvoyVehicle = {
+		params ["_type","_vehPos","_vehDir","_group","_loadoutSet"];
+		private _veh = createVehicle [_type,_vehPos,[],0,"None"];
+		_veh setDir _vehDir;
+		private _vehDriver = [_group,_loadoutSet] call MAZ_fnc_createVehicleUnitConvoy;
+		_vehDriver moveInDriver _veh;
+		_vehDriver limitSpeed 57;
+		_vehDriver setSkill ["courage",1];
+		_vehDriver setSkill ["commanding",1];
+		if(_type isKindOf "Truck_F") then {
+			private _vehCargo = [_group,_loadoutSet] call MAZ_fnc_createVehicleUnitConvoy;
+			_vehCargo moveInCargo _veh;
+		} else {
+			private _vehGunner = [_group,_loadoutSet] call MAZ_fnc_createVehicleUnitConvoy;
+			_vehGunner moveInGunner _veh;
+			if (_veh emptyPositions "commander" > 0) then {
+				private _vehCommander = [_group,_loadoutSet] call MAZ_fnc_createVehicleUnitConvoy;
+				_vehCommander moveInCommander _veh;
+			};
+		};
+		_veh;
+	};
+
+	private _convoyType = selectRandom [0,1,2];
+	private _convoyInfo = [_convoyType] call MAZ_fnc_getConvoyInfo;
+	
+	private _vehTypes = _convoyInfo select 0;
+	private _startPos = _convoyInfo select 1;
+	private _startLocations = _convoyInfo select 2;
+	private _startDirs = _convoyInfo select 3;
+	private _wayPoints = _convoyInfo select 4;
+	private _endPos = _convoyInfo select 5;
+	private _markerLocations = _convoyInfo select 6;
+	private _convoySide = _convoyInfo select 7;
+	private _loadoutSet = _convoyInfo select 8;
+
+	private _convoyGroup = createGroup _convoySide;
+	private _vehicles = [];
+	for "_i" from 0 to (count _vehTypes-1) do {
+		private _vehType = _vehTypes select _i;
+		private _vehPos = _startLocations select _i;
+		private _vehDir = _startDirs select _i;
+		private _return = [_vehType,_vehPos,_vehDir,_convoyGroup,_loadoutSet] call MAZ_fnc_createConvoyVehicle;
+		_vehicles pushBack _return;
+	};
+
+	private _leader = effectiveCommander (_vehicles select 0);
+	_convoyGroup selectLeader _leader;
+	_leader setSkill ["courage",1];
+	_leader setSkill ["commanding",1];
+
+	_convoyGroup setCombatMode "YELLOW";
+	_convoyGroup setBehaviour "SAFE";
+	_convoyGroup setFormation "COLUMN";
+	_convoyGroup setSpeedMode "LIMITED";
+
+	enableEnvironment [false,true];
+	[[false,true]] remoteExec ['enableEnvironment',2];
+
+	{
+		private _waypoint = _convoyGroup addWaypoint [_x, 0];
+		_waypoint setWaypointType "MOVE";
+		_waypoint setWaypointCompletionRadius 35;
+		_waypoint setWaypointCombatMode "YELLOW";
+		_waypoint setWaypointBehaviour "SAFE";
+		_waypoint setWaypointFormation "COLUMN";
+		_waypoint setWaypointSpeed "LIMITED";
+	} forEach _wayPoints;
+	private _numWaypoints = count waypoints _convoyGroup;
+
+	private _cargoVehicles = [];
+	{
+		_x allowCrewInImmobile true;
+		[_x,2] remoteExec ['lock',0,_x];
+		_x limitSpeed 57;
+		(driver _x) limitSpeed 57;
+		_x forceSpeed 15.84;
+		_x setConvoySeparation 90;
+		private _driverVeh = driver _x;
+		_driverVeh allowFleeing 0;
+		_driverVeh disableAI "AUTOCOMBAT";
+		_driverVeh disableAI "TARGET";
+		_driverVeh disableAI "MINEDETECTION";
+		if(typeOf _x isKindOf "Truck_F") then {
+			_cargoVehicles pushBack _x;
+		};
+	}forEach _vehicles;
+
+	{
+		_x limitSpeed 57;
+		_x disableAI "MINEDETECTION";
+	}forEach (units _convoyGroup);
+
+	private _markers = [];
+
+	private _markerColor = "ColorEAST";
+	switch (_convoySide) do {
+		case east: {_markerColor = "ColorEAST";};
+		case independent: {_markerColor = "ColorGUER";};
+	};
+	private _convoyStartMarker = createMarker ["convoyStart_MAZ",_startPos];
+	_convoyStartMarker setMarkerType "mil_marker";
+	_convoyStartMarker setMarkerColor _markerColor;
+	_convoyStartMarker setMarkerText "Convoy Start";
+	_markers pushBack _convoyStartMarker;
+
+	{
+		private _checkpointMarker = createMarker [format ["checkPointMarker_MAZ_%1",_forEachIndex],_x];
+		_checkpointMarker setMarkerType "mil_marker";
+		_checkpointMarker setMarkerColor _markerColor;
+		_checkpointMarker setMarkerText format ["Checkpoint #%1",_forEachIndex+1];
+		_markers pushBack _checkpointMarker;
+	}forEach _markerLocations;
+
+	["TaskAssignedIcon",["A3\UI_F\Data\Map\Markers\Military\warning_CA.paa","A Convoy is Moving"]] remoteExec ['BIS_fnc_showNotification',0];
+
+	[_vehicles] spawn {
+		params ["_vehicles"];
+		while {({alive _x} count _vehicles) != 0} do {
+			{
+				_x limitSpeed 57;
+				(driver _x) limitSpeed 57;
+				_x forceSpeed 15.84;
+				_x setConvoySeparation 90;
+			}forEach _vehicles;
+			sleep 1;
+		};
+	};
+
+	[_markers,_vehicles] spawn {
+		params ["_markers","_vehicles"];
+		for "_i" from 0 to (count _markers - 2) do {
+			waitUntil {
+				(
+					({
+						(_x distance (getMarkerPos (_markers select (_i + 1)))) < 30
+					} count _vehicles) != 0
+				)
+			};
+			["TaskAssignedIcon",["A3\UI_F\Data\Map\Markers\Military\warning_CA.paa",format ["The Convoy Has Reached Checkpoint %1",_i + 1]]] remoteExec ['BIS_fnc_showNotification',0];
+		};
+	};
+
+	[_convoyGroup,_numWaypoints,_vehicles,_markers,_cargoVehicles] spawn {
+		params ["_convoyGroup","_numWaypoints","_vehicles","_markers","_trucks"];
+		private _soldiersArray = units _convoyGroup;
+		waitUntil {currentWaypoint _convoyGroup >= _numWaypoints || (({alive _x} count _soldiersArray) == 0) || (({alive _x} count _trucks) == 0)};
+		if(({alive _x} count _soldiersArray) == 0) exitWith {
+			comment "Success";
+			["TaskSucceeded",["","Convoy Stopped!"]] remoteExec ['BIS_fnc_showNotification',0];
+			{
+				deleteMarker _x;
+			}forEach _markers;
+			sleep 90;
+			waitUntil {{isPlayer _x} count ((_vehicles select 0) nearEntities ["Man",1600]) == 0};
+			{
+				deleteVehicle _x;
+			} forEach _vehicles + _soldiersArray;
+			sleep 600;
+			[] call MAZ_fnc_newConvoyMission;
+		};
+		if(currentWaypoint _convoyGroup >= _numWaypoints) exitWith {
+			comment "Failure";
+			["TaskFailed",["","Convoy Reached Their End"]] remoteExec ['BIS_fnc_showNotification',0];
+			{
+				deleteMarker _x;
+			}forEach _markers;
+			{
+				deleteVehicle _x;
+			} forEach _vehicles + _soldiersArray;
+			sleep 600;
+			[] call MAZ_fnc_newConvoyMission;
+		};
+		if(({alive _x} count _trucks) == 0) exitWith {
+			comment "Failure";
+			["TaskFailed",["","Convoy Cargo Destroyed!"]] remoteExec ['BIS_fnc_showNotification',0];
+			{
+				deleteMarker _x;
+			}forEach _markers;
+			sleep 90;
+			waitUntil {{isPlayer _x} count ((_vehicles select 0) nearEntities ["Man",1600]) == 0};
+			{
+				deleteVehicle _x;
+			} forEach _vehicles + _soldiersArray;
+			sleep 600;
+			[] call MAZ_fnc_newConvoyMission;
+		};
+	};
+};
