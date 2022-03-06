@@ -13,8 +13,8 @@ Automated Missions creates randomized and automated missions for a Zeus. These a
 
 
 ## Notes
-Currently only setup for Altis
-WIP, expect bugs
+ - Currently only setup for Altis
+ - WIP, expect bugs
 
 ## License
 Automated Missions is licensed under the ([MIT License](https://github.com/expung3d/A3-Automated-Missions/blob/main/LICENSE)).
