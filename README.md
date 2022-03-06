@@ -5,15 +5,11 @@ Automated Missions creates randomized and automated missions for a Zeus. These a
 
 ## Mission Types
 
-Helicrashes
-
-Convoys
-
-HVTs in Towns
-
-Garrisonned Towns
-
-More soon...
+ - Helicrashes
+ - Convoys
+ - HVTs in Towns
+ - Garrisonned Towns
+ - More soon...
 
 
 ## Notes
