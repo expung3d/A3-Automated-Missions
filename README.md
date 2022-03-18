@@ -13,7 +13,7 @@ Automated Missions creates randomized and automated missions for a Zeus. These a
 
 
 ## Notes
- - Currently only setup for Altis
+ - Convoy mission types are only configured for Altis. 
  - WIP, expect bugs
 
 ## License
