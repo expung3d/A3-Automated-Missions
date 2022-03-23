@@ -114,9 +114,10 @@ MAZ_EZM_fnc_garrisonTown = {
 		} forEach nearestLocations [getArray (configFile >> "CfgWorlds" >> worldName >> "centerPosition"), [_x], worldSize];	
 	} forEach ["NameVillage", "NameCity", "NameCityCapital"];
 
-	comment "IGNORE This code does not execute normally, but does within my own user interface.";
+
+	comment "IGNORE This code does not execute normally, rather it SHOULD not, but does within my own user interface.";
 	if(_town == "NONE" || _town == "") then {
-		_position = [] call MAZ_EZM_fnc_getScreenPosition;
+		_position = getPos player;
 		_sizeTown = 200;
 	} else {
 
@@ -133,7 +134,7 @@ MAZ_EZM_fnc_garrisonTown = {
 		_sizeTown = (_x max _y) * 0.75;
 	};
 
-	comment "Create alert text";
+	comment "Define alert text";
 	private _townAlert = format ["%1 IS UNDER ATTACK",toUpper _town];
 	if(toUpper _town == "NONE") then {
 		_townAlert = "A TOWN IS UNDER ATTACK";
@@ -299,6 +300,8 @@ MAZ_EZM_fnc_garrisonTown = {
 		};
 	}forEach _buildings;
 
+
+
 	comment "
 		Create patrols
 
@@ -309,6 +312,7 @@ MAZ_EZM_fnc_garrisonTown = {
 		Create 6 waypoints for the group on random road positions within the town.
 		Create cycle waypoint at starting position.
 	";
+	
 	for "_i" from 0 to _numOfPatrols do {
 		private _randPos = [[[_position,150]]] call BIS_fnc_randomPos;
 		private _nearRoads = _randPos nearRoads 150;
