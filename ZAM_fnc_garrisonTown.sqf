@@ -27,69 +27,63 @@ MAZ_EZM_fnc_garrisonGroup = {
 	private _leader = leader _group;
 	private _previousBehaviour = behaviour _leader;
 
-	private _arrayShuffle = {
-		private _array = _this select 0;
-		private _count = count _array;
-		private _arrayN = [];
-		private _arrayT = [];
-		private _c = 0;
-		private _r = 0;
-
-		while {_c < _count} do
-		{
-			while {_r in _arrayT} do
-			{_r = floor (random _count);
-			};
-			_arrayT pushBack _r;
-			_arrayN set [_c, _array select _r];
-			_c = _c + 1;
-		};
-
-		_arrayN
-	};
-
 	private _fnc_getHousePositions = {
 		params ["_index","_houses"];
 		private _nearestBuilding = _houses select _index;
 		if(isNil "_nearestBuilding") exitWith {};
 		private _positionsInBuilding = [_nearestBuilding] call BIS_fnc_buildingPositions;
-		_positionsInBuilding = [_positionsInBuilding] call _arrayShuffle;
+
+		comment "Shuffle the positions within the building.";
+		_positionsInBuilding = _positionsInBuilding call BIS_fnc_arrayShuffle;
 		_positionsInBuilding
 	};
 
 	private _fnc_orderToPositions = {
 		params ["_units","_positions","_houseIndex"];
 		private _newUnits = _units;
+
 		{
 			private _unit = objNull;
+
+			comment "
+				If the amount of units is greater than the index.
+				Checks to make sure there is an actual position for the unit.
+			";
 			if((count _units) -1 >= _forEachIndex) then {
-				private _unit = _units select _forEachIndex;
+				comment "Set unit to the position, force speed to 0 so they stay in position";
+				_unit = _units select _forEachIndex;
 				_unit setPos _x;
 				_newUnits = _newUnits - [_unit];
 				_unit forceSpeed 0;
 			};
 		}forEach _positions;
+
+		comment "If there are less positions than there are units, recurse.";
 		if((count _buildingPoses) < (count _units)) then {
+
+			comment "Update house index, get house positions, garrison remaining units.";
 			_houseIndex = _houseIndex + 1;
 			_buildingPoses = [_houseIndex,_nearestBuildings] call _fnc_getHousePositions;
 			[_newUnits,_buildingPoses,_houseIndex] call _fnc_orderToPositions;
 		};
 	};
 
+	comment "Delete existing waypoints for all units";
 	{
 		deleteWaypoint [_group,_forEachIndex];
 	}forEach (waypoints _group);
 
+	comment "Get nearest building to the group leader";
 	private _nearestBuildings = nearestObjects [getPos _leader, ["building"], 50, true];
-
 	if (_nearestBuildings isEqualTo []) exitWith { false };
 	_group setbehaviour "AWARE";
 
+	comment "Get positions from building";
 	private _houseIndex = 0;
 	private _buildingPoses = [_houseIndex,_nearestBuildings] call _fnc_getHousePositions;
 
+	comment "Retrieve alive units from the group and garrison them";
 	private _units = (units _group) select {!isNull _x && alive _x};
-
 	[_units,_buildingPoses,_houseIndex] call _fnc_orderToPositions;
 
 	true
@@ -102,33 +96,50 @@ MAZ_EZM_fnc_garrisonTown = {
 		["_percentGarrison",0.2,[0.2]],
 		["_numOfPatrols",selectRandom [2,3,4],[3]]
 	];
-	copyToClipboard (str _side);
+	comment "Can't garrison civilians you dummie!";
 	if(_side isEqualTo civilian) exitWith {false};
 
+	comment "
+		Retrieve location position and size from locations in map configs.
+	";
 	private ["_position","_sizeTown"];
 	_town = toUpper _town;
 	private _locations = [];
+	comment "For each of the location types";
 	{	
+		comment "For each of the locations in the current world";
 		{	
+			comment "Pushback array with town name, position, and size";
 			_locations pushBack [toUpper (text _x), locationPosition _x,size _x];
 		} forEach nearestLocations [getArray (configFile >> "CfgWorlds" >> worldName >> "centerPosition"), [_x], worldSize];	
 	} forEach ["NameVillage", "NameCity", "NameCityCapital"];
+
+	comment "IGNORE This code does not execute normally, but does within my own user interface.";
 	if(_town == "NONE" || _town == "") then {
 		_position = [] call MAZ_EZM_fnc_getScreenPosition;
 		_sizeTown = 200;
 	} else {
+
+		comment "Find index in locations array of the town information";
 		private _index = _locations findIf {(_x select 0) == _town};
-		_townData = _locations select _index;
+		private  _townData = _locations select _index;
+
+		comment "Retrieve town name, position, and the size of the town";
 		_town = _townData select 0;
 		_position = _townData select 1;
+
+		comment "Scale down of the town size to reduce performance impact";
 		(_townData select 2) params ["_x","_y"];
 		_sizeTown = (_x max _y) * 0.75;
 	};
+
+	comment "Create alert text";
 	private _townAlert = format ["%1 IS UNDER ATTACK",toUpper _town];
 	if(toUpper _town == "NONE") then {
 		_townAlert = "A TOWN IS UNDER ATTACK";
 	};
 
+	comment "Get unit types based on map and side";
 	private _fnc_getUnitTypes = {
 		params [
 			"_side"
@@ -259,7 +270,18 @@ MAZ_EZM_fnc_garrisonTown = {
 		};
 		_return
 	};
+
+	comment "Get unit types";
 	private _unitTypes = [_side] call _fnc_getUnitTypes;
+
+
+	comment "
+		Get all buildings in the town.
+		For each building use RNG to see if its under the percentage provided
+
+		If it is
+			Create random number of units and garrison their group.
+	";
 	private _buildings = nearestTerrainObjects [_position,["BUILDING","HOUSE"],_sizeTown];
 	private _units = [];
 	{
@@ -277,6 +299,16 @@ MAZ_EZM_fnc_garrisonTown = {
 		};
 	}forEach _buildings;
 
+	comment "
+		Create patrols
+
+		Get random position inside the town and get the nearest roads.
+		Select a random road for spawning.
+		Select random number of units and spawn them at the road's position.
+
+		Create 6 waypoints for the group on random road positions within the town.
+		Create cycle waypoint at starting position.
+	";
 	for "_i" from 0 to _numOfPatrols do {
 		private _randPos = [[[_position,150]]] call BIS_fnc_randomPos;
 		private _nearRoads = _randPos nearRoads 150;
@@ -304,6 +336,8 @@ MAZ_EZM_fnc_garrisonTown = {
 		_waypoint setWaypointSpeed "LIMITED";
 	};
 
+
+	comment "Add units to Zeus interface";
 	[[_units],{
 		params ["_objs"];
 		{
@@ -311,6 +345,7 @@ MAZ_EZM_fnc_garrisonTown = {
 		} foreach allCurators;
 	}] remoteExec ["Spawn",2];
 
+	comment "Display alert";
 	["TaskAssignedIcon",["A3\UI_F\Data\Map\Markers\Military\warning_CA.paa",_townAlert]] remoteExec ['BIS_fnc_showNotification',0];
 
 	true
@@ -318,13 +353,21 @@ MAZ_EZM_fnc_garrisonTown = {
 
 MAZ_EZM_fnc_callGarrisonTown = {
 	params ["_town",["_side",east],["_percentGarrison",0.2],["_patrols",3]];
+
+	comment "Check for if the town is a real town";
 	private _locationNames = [];
+	comment "For each location type";
 	{	
-		private _lct = _forEachIndex;
+		comment "For all locations of type in world";
 		{	
+			comment "Pushback town name";
 			_locationNames pushBack (toUpper (text _x));
 		} forEach nearestLocations [getArray (configFile >> "CfgWorlds" >> worldName >> "centerPosition"), [_x], worldSize];	
 	} forEach ["NameVillage", "NameCity", "NameCityCapital"];
-	if(!(toUpper _town in _locationNames)) exitWith {playSound "addItemFailed"; systemChat "[ Enhanced Zeus Modules ] : No such town!"};
+
+	comment "If town provided doesn't exist, display error and exit.";
+	if(!(toUpper _town in _locationNames)) exitWith {playSound "addItemFailed"; systemChat "[ Auto-Garrison ] : No such town!"};
+
+	comment "Garrison town";
 	[_town,_side,_percentGarrison,_patrols] spawn MAZ_EZM_fnc_garrisonTown;
 };
